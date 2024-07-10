@@ -1,4 +1,4 @@
-name: Destroy AWS Resources
+name: Destroy AWS S3 Buckets
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs at midnight every day
@@ -25,4 +25,8 @@ jobs:
           /usr/local/bin/cloud-nuke --version
       - name: Run Cloud Nuke
         run: |
-          /usr/local/bin/cloud-nuke aws --region us-east-1 --region us-east-2 --force
+          /usr/local/bin/cloud-nuke aws \
+            --region us-east-1 \
+            --region us-east-2 \
+            -t s3 \
+            --force
