@@ -1,0 +1,25 @@
+name: AWS Nuke
+
+on:
+  workflow_dispatch:
+
+jobs:
+  aws-nuke:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up AWS Nuke
+      run: |
+        wget https://github.com/rebuy-de/aws-nuke/releases/download/v2.25.0/aws-nuke-v2.25.0-linux-amd64.tar.gz
+        tar -xzvf aws-nuke-v2.25.0-linux-amd64.tar.gz
+        sudo mv aws-nuke-v2.25.0-linux-amd64 /usr/local/bin/aws-nuke
+        aws-nuke --version
+
+    - name: Run AWS Nuke
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws-nuke -c nuke-config.yml --no-dry-run --force
